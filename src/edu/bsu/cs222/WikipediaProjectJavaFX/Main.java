@@ -25,13 +25,20 @@ public class Main extends Application {
         Button button = new Button("Get Last Edit");
         button.setOnAction((event) -> {
             StringBuilder output = new StringBuilder();
-            users = fileParser.lastUsersWhoEdited(fileParser.getJSONfromURL(userInput.getText()));
-            dates = fileParser.dateOfEdit(fileParser.getJSONfromURL(userInput.getText()));
-            if(fileParser.isRedirected()){
-                output.append("Redirected: ");
+            if (userInput.getText().isEmpty()) {
+                systemOutput.setText("No text inputted");
             }
-            output.append(pageEditPeeker.formList(users,dates));
-            systemOutput.setText(output.toString());
+            else{
+                users = fileParser.lastUsersWhoEdited(fileParser.getJSONfromURL(userInput.getText()));
+                dates = fileParser.dateOfEdit(fileParser.getJSONfromURL(userInput.getText()));
+                if(fileParser.isRedirected()){
+                    output.append("Redirected: ");
+                }
+                output.append(pageEditPeeker.formList(users,dates));
+                systemOutput.setText(output.toString());
+                output.delete(0,output.length());
+            }
+
         });
         VBox outerBox = new VBox();
         outerBox.getChildren().addAll(createInputBox(), button, createOutputBox());
