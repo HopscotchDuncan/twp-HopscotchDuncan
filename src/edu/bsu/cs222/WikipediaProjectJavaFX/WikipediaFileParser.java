@@ -1,7 +1,5 @@
 package edu.bsu.cs222.WikipediaProjectJavaFX;
 
-import com.jayway.jsonpath.JsonPath;
-import com.jayway.jsonpath.ReadContext;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -46,33 +44,39 @@ public class WikipediaFileParser {
         return redirect;
     }
 
-    public ArrayList<String> lastUsersWhoEdited(String jsonString){
-        ReadContext ctx = JsonPath.parse(jsonString);
-        ArrayList<String> users = ctx.read("$..user");
-        if(users.size()==31){
-            ArrayList<String> one = new ArrayList<>();
-            one.add(users.get(0));
-            return one;
+    public ArrayList<String> lastUsersWhoEdited(String jsonString) {
+        ArrayList<String> users = new ArrayList<>();
+        String[] dividedValues = jsonString.split("\"");
+        for (int i = 0; i < dividedValues.length - 1; i++) {
+            if (dividedValues[i].contains("user")) {
+                //will fill array up to 30, else will just put the first one into another array and return that
+                if (users.size() < 30) {
+                    users.add(dividedValues[i + 2]);
+                } else {
+                    ArrayList<String> one = new ArrayList<>();
+                    one.add(users.get(0));
+                    return one;
+                }
+            }
         }
-        if(users.size()>0){
-            return users;
-        }else{
-            return null;
-        }
+        return null;
     }
 
     public ArrayList<String> dateOfEdit(String jsonString){
-        ReadContext ctx = JsonPath.parse(jsonString);
-        ArrayList<String> dates = ctx.read("$..timestamp");
-        if(dates.size()==31){
-            ArrayList<String> one = new ArrayList<>();
-            one.add(dates.get(0));
-            return one;
+            ArrayList<String> dates = new ArrayList<>();
+            String[] dividedValues = jsonString.split("\"");
+            for (int i = 0; i < dividedValues.length - 1; i++) {
+                if (dividedValues[i].contains("timestamp")) {
+                    //will fill array up to 30, else will just put the first one into another array and return that
+                    if (dates.size() < 30) {
+                        dates.add(dividedValues[i + 2]);
+                    } else {
+                        ArrayList<String> one = new ArrayList<>();
+                        one.add(dates.get(0));
+                        return one;
+                    }
+                }
+            }
+        return null;
         }
-        if(dates.size()>0){
-            return dates;
-        }else{
-            return null;
-        }
-    }
 }
