@@ -7,8 +7,6 @@ import java.util.Scanner;
 public class WikipediaPageEditPeeker{
 
     Scanner util = new Scanner(System.in);
-    private ArrayList<String> users = new ArrayList<String>();
-    private ArrayList<String> dates = new ArrayList<String>();
 
     public String formList(List<String> users, List<String> dates){
         StringBuilder formattedUsersAndDates = new StringBuilder();
@@ -26,8 +24,8 @@ public class WikipediaPageEditPeeker{
             System.err.println("No title entered into field");
             System.exit(1);
         }
-        users = fileParser.lastUsersWhoEdited(fileParser.getJSONfromURL(title));
-        dates = fileParser.dateOfEdit(fileParser.getJSONfromURL(title));
+        ArrayList<String> users = fileParser.lastUsersWhoEdited(fileParser.getJSONfromURL(title));
+        ArrayList<String> dates = fileParser.dateOfEdit(fileParser.getJSONfromURL(title));
         if(users == null){
             System.err.println("Page not found");
             System.exit(2);
@@ -35,7 +33,7 @@ public class WikipediaPageEditPeeker{
         if (fileParser.isRedirected()){
             System.out.println("Page was redirected");
         }
-        formList(users,dates);
+        System.out.println(formList(users, dates));
     }
 
 }

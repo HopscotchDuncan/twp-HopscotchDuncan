@@ -27,6 +27,7 @@ public class WikipediaFileParser {
                 data.append(xml);
             }
             String jsonData = data.toString();
+            data.delete(0,data.length());
             if(jsonData.contains("redirects")){
                 redirect = true;
             }
@@ -43,6 +44,9 @@ public class WikipediaFileParser {
 
     public boolean isRedirected(){
         return redirect;
+    }
+    public void setRedirect(boolean newValue){
+        redirect = newValue;
     }
 
     public ArrayList<String> lastUsersWhoEdited(String jsonString) {
