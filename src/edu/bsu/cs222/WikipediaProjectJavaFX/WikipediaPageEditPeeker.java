@@ -11,7 +11,10 @@ public class WikipediaPageEditPeeker{
     public String formList(List<String> users, List<String> dates){
         StringBuilder formattedUsersAndDates = new StringBuilder();
         for(int i = 0; i< users.size(); i++){
-            formattedUsersAndDates.append(dates.get(i) + " " + users.get(i) + "\n");
+            formattedUsersAndDates.append(dates.get(i));
+            formattedUsersAndDates.append(" ");
+            formattedUsersAndDates.append(users.get(i));
+            formattedUsersAndDates.append("\n");
         }
         return formattedUsersAndDates.toString();
     }
@@ -24,8 +27,8 @@ public class WikipediaPageEditPeeker{
             System.err.println("No title entered into field");
             System.exit(1);
         }
-        ArrayList<String> users = fileParser.lastUsersWhoEdited(fileParser.getJSONfromURL(title));
-        ArrayList<String> dates = fileParser.dateOfEdit(fileParser.getJSONfromURL(title));
+        ArrayList<String> users = fileParser.lastUsersWhoEdited(fileParser.getJSONFromURL(title));
+        ArrayList<String> dates = fileParser.dateOfEdit(fileParser.getJSONFromURL(title));
         if(users == null){
             System.err.println("Page not found");
             System.exit(2);

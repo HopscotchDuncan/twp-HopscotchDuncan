@@ -1,6 +1,8 @@
 package edu.bsu.cs222.WikipediaProjectJavaFX;
 
 
+import javafx.scene.control.Alert;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -15,7 +17,7 @@ public class WikipediaFileParser {
     private Boolean redirect = false;
     private final StringBuilder data = new StringBuilder();
 
-    public String getJSONfromURL(String userInput){
+    public String getJSONFromURL(String userInput){
         try {
             String pageTitle = linkBuilder.formatUserInput(userInput);
             String jsonURL = linkBuilder.buildLink(pageTitle);
@@ -36,8 +38,34 @@ public class WikipediaFileParser {
             System.err.println("No Connection");
             System.exit(3);
         } catch (IOException e) {
-            System.err.println("No Connection");
+            System.err.println("Check Connection");
             System.exit(3);
+        }
+        return null;
+    }
+    public String getJSONFromURLGUI(String userInput){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText("A connection error has occurred");
+        try {
+            String pageTitle = linkBuilder.formatUserInput(userInput);
+            String jsonURL = linkBuilder.buildLink(pageTitle);
+            URL url = new URL(jsonURL);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            BufferedReader bR = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String xml;
+            while((xml = bR.readLine())!=null){
+                data.append(xml);
+            }
+            String jsonData = data.toString();
+            data.delete(0,data.length());
+            if(jsonData.contains("redirects")){
+                redirect = true;
+            }
+            return jsonData;
+        }catch (IOException e) {
+            alert.showAndWait();
         }
         return null;
     }

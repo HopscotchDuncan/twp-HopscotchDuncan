@@ -24,14 +24,16 @@ public class GUI extends Application {
     @Override
     public void start(Stage primaryStage) {
         Button button = new Button("Get Last Edit");
+        systemOutput.setEditable(false);
         button.setOnAction((event) -> {
             reset();
+            userInput.setEditable(false);
             try {
                 if (userInput.getText().isEmpty()) {
                     systemOutput.setText("No text inputted");
                 } else {
-                    users = fileParser.lastUsersWhoEdited(fileParser.getJSONfromURL(userInput.getText()));
-                    dates = fileParser.dateOfEdit(fileParser.getJSONfromURL(userInput.getText()));
+                    users = fileParser.lastUsersWhoEdited(fileParser.getJSONFromURLGUI(userInput.getText()));
+                    dates = fileParser.dateOfEdit(fileParser.getJSONFromURLGUI(userInput.getText()));
                     if (fileParser.isRedirected()) {
                         output.append("Redirected: ");
                         fileParser.setRedirect(false);
@@ -42,6 +44,7 @@ public class GUI extends Application {
             } catch (NullPointerException e) {
                 systemOutput.setText("Page not found");
             }
+            userInput.setEditable(true);
         });
         VBox outerBox = new VBox();
         outerBox.getChildren().addAll(createInputBox(), button, createOutputBox());
