@@ -32,9 +32,10 @@ public class WikipediaFileParser {
             }
             return jsonData;
         }catch(MalformedURLException e){
-            e.printStackTrace();
+            System.err.println("No Connection");
+            System.exit(3);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("No Connection");
             System.exit(3);
         }
         return null;
